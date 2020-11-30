@@ -1,6 +1,6 @@
 cask 'vscodium' do
-  version "1.48.2"
-  sha256 "171f69646eb0f90b156d4d92a104ff838dcd981f8f79671de06a1db60b9e7d7b"
+  version '1.51.1'
+  sha256 '730ededf174ebced2a90bddbd87862c2a06869783853ad956af72c85f5b57e70'
 
   url "https://github.com/VSCodium/vscodium/releases/download/#{version}/VSCodium.#{version}.dmg"
   appcast 'https://github.com/VSCodium/vscodium/releases.atom'
@@ -47,5 +47,5 @@ cask 'vscodium' do
                '~/.vscode-oss',
              ]
 
-  caveats "Do not use the built-in update functionality with this version of VSCodium or the extensions marketplace settings will be overwritten; use `brew cask upgrade` instead."
+  caveats 'Do not use the built-in update functionality with this version of VSCodium or the extensions marketplace settings will be overwritten; use `brew cask upgrade` instead.'
 end
