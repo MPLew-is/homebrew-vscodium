@@ -25,7 +25,15 @@ cask 'vscodium' do
 
     # Disable auto-updating in user-level VSCodium settings, or the above extensions patch would be overwritten.
     settings_file_path = "#{Dir.home}/Library/Application Support/VSCodium/User/settings.json"
-    settings = JSON.load(File.read(settings_file_path))
+    
+    # Read exisitng settings file if it exists.
+    begin
+      settings = JSON.load(File.read(settings_file_path))
+    # Just use an empty hash otherwise.
+    rescue
+      settings = {}
+    end
+
     settings['update.mode'] = 'none'
     File.write(settings_file_path, JSON.pretty_generate(settings))
 
