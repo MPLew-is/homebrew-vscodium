@@ -1,0 +1,23 @@
+name: Update from upstream cask definition
+
+on:
+  # Run every 4 hours.
+  schedule:
+    - cron: "0 */4 * * *"
+
+  # Also allow manual triggering.
+  workflow_dispatch:
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout both superproject and submodule.
+      - uses: actions/checkout@v2
+        with:
+          submodules: true
+
+      # Run Make script to pull in changes from upstream.
+      - name: Update from upstream
+        run: make update

@@ -1,0 +1,4 @@
+[submodule "homebrew-cask"]
+	path = homebrew-cask
+	url = https://github.com/Homebrew/homebrew-cask
+	branch = master
