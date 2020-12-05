@@ -24,7 +24,5 @@ jobs:
           git config user.name "Github Actions"
           git config user.email "github-actions@github.com"
 
-      - uses: mxschmitt/action-tmate@v3
-
       - name: Update from upstream
         run: make update
