@@ -13,16 +13,22 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Checkout both superproject and submodule.
+      # Checkout both superproject and submodule, with full history (to allow patch generation).
       - uses: actions/checkout@v2
         with:
           submodules: true
           fetch-depth: 0
 
+      # Set username and email so that commits can be made.
       - name: Set Git committer identity
         run: |
           git config user.name "Github Actions"
           git config user.email "github-actions@github.com"
 
+      # Cherry-pick commits that change the cask file from the upstream repository.
       - name: Update from upstream
         run: make update
+
+      # Push those commits back to `master`.
+      - name: Push to `master`
+        run: git push
