@@ -20,4 +20,7 @@ jobs:
 
       # Run Make script to pull in changes from upstream.
       - name: Update from upstream
-        run: make update
+        run: |
+          git config user.name "Github Actions"
+          git config user.email "github-actions@github.com"
+          make update
