@@ -20,7 +20,7 @@ update:
     # Update the cask submodule to the latest remote commit, which prints the new commit if it's different.
 	@git submodule update --init --remote -- "${SUBMODULE_DIRECTORY}"
     # Extract any submodule commits affecting the cask file into patches, then apply to the superproject.
-	@git -C "${SUBMODULE_DIRECTORY}" format-patch --stdout "${PREVIOUS_COMMIT}..HEAD" -- "${CASK_PATH}" | git am
+	@git -C "${SUBMODULE_DIRECTORY}" format-patch --stdout "${PREVIOUS_COMMIT}..HEAD" -- "${CASK_PATH}" | git am --3way
     # Amend the submodule update onto the last cask-update patch, but only if an update was already applied in the previous step.
     # We neither want to amend an already-pushed commit nor have a bunch of useless commits that just bump the submodule version without also bumping the cask version.
 	@if [ "$$(git rev-parse --abbrev-ref HEAD)" = 'master' ] && [ "$$(git rev-parse HEAD)" != "$$(git rev-parse @{u})" ]; then \
