@@ -56,5 +56,5 @@ cask "vscodium" do
                           ]
   end
 
-  caveats 'Do not use the built-in update functionality with this version of VSCodium or the extensions marketplace settings will be overwritten; use `brew cask upgrade` instead.'
+  caveats 'Do not use the built-in update functionality with this version of VSCodium or the extensions marketplace settings will be overwritten; use `brew upgrade --cask` instead.'
 end
