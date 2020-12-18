@@ -13,11 +13,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Checkout both superproject and submodule, with full history (to allow patch generation).
+      # Checkout both superproject and submodule, with shallow history (the Makefile will take care of fetching more).
       - uses: actions/checkout@v2
         with:
           submodules: true
-          fetch-depth: 0
 
       # Set username and email so that commits can be made.
       - name: Set Git committer identity
