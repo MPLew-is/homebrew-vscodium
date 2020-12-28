@@ -1,0 +1,64 @@
+diff --git a/homebrew-cask/Casks/vscodium.rb b/Casks/vscodium-with-vscode-extensions.rb
+index e8759a82b2..574e0095e5 100644
+--- a/homebrew-cask/Casks/vscodium.rb
++++ b/Casks/vscodium-with-vscode-extensions.rb
+@@ -1,1 +1,1 @@
+-cask "vscodium" do
++cask "vscodium-with-vscode-extensions" do
+@@ -6,10 +6,13 @@
+   appcast "https://github.com/VSCodium/vscodium/releases.atom"
+-  name "VSCodium"
+-  desc "Binary releases of VS Code without MS branding/telemetry/licensing"
++  name "VSCodium (with original Visual Studio Code Extensions Gallery configuration)"
++  desc "Binary releases of VS Code without MS branding/telemetry/licensing (and with original Visual Studio Code Extensions Gallery configuration)"
+   homepage "https://github.com/VSCodium/vscodium"
+
+-  auto_updates true
+-  conflicts_with cask: "visual-studio-code"
++  auto_updates false
++  conflicts_with cask: [
++    "visual-studio-code",
++    "vscodium",
++  ]
+
+   app "VSCodium.app"
+   binary "#{appdir}/VSCodium.app/Contents/Resources/app/bin/code"
+@@ -23,4 +26,38 @@ cask "vscodium" do
+     "~/Library/Saved Application State/com.visualstudio.code.oss.savedState",
+     "~/.vscode-oss",
+   ]
++
++  postflight do
++    require 'json'
++
++    # Reset extensions gallery to mainline Visual Studio Code one by overriding some settings in the app bundle.
++    product_file_path = "#{appdir}/VSCodium.app/Contents/Resources/app/product.json"
++    product = JSON.load(File.read(product_file_path))
++    product['extensionsGallery']['serviceUrl'] = 'https://marketplace.visualstudio.com/_apis/public/gallery'
++    product['extensionsGallery']['itemUrl'] = 'https://marketplace.visualstudio.com/items'
++    File.write(product_file_path, JSON.pretty_generate(product))
++
++    # Disable auto-updating in user-level VSCodium settings, or the above extensions patch would be overwritten.
++    settings_file_path = "#{Dir.home}/Library/Application Support/VSCodium/User/settings.json"
++
++    # Read exisitng settings file if it exists.
++    begin
++      settings = JSON.load(File.read(settings_file_path))
++    # Just use an empty hash otherwise.
++    rescue
++      settings = {}
++    end
++
++    settings['update.mode'] = 'none'
++    File.write(settings_file_path, JSON.pretty_generate(settings))
++
++    # macOS quarantines apps when an internal file is modified; undo that to allow the app to open.
++    system_command 'xattr',
++                    args: [ '-r',
++                            '-d', 'com.apple.quarantine',
++                            "#{appdir}/VSCodium.app"
++                          ]
++  end
++
++  caveats 'Do not use the built-in update functionality with this version of VSCodium or the extensions marketplace settings will be overwritten; use `brew upgrade --cask` instead.'
+ end

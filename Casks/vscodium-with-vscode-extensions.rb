@@ -1,4 +1,4 @@
-cask "vscodium" do
+cask "vscodium-with-vscode-extensions" do
   version "1.52.1"
   sha256 "c0a44c9806766d70175880b3e0f2c2cd24875d5281864b1499171190e793f766"
 
@@ -9,7 +9,10 @@ cask "vscodium" do
   homepage "https://github.com/VSCodium/vscodium"
 
   auto_updates false
-  conflicts_with cask: "visual-studio-code"
+  conflicts_with cask: [
+    "visual-studio-code",
+    "vscodium",
+  ]
 
   app "VSCodium.app"
   binary "#{appdir}/VSCodium.app/Contents/Resources/app/bin/code"
