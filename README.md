@@ -7,16 +7,16 @@ Inspired by the following issues, for context:
 - [VSCodium/vscodium#418](https://github.com/VSCodium/vscodium/issues/418)
 - [VSCodium/vscodium#430](https://github.com/VSCodium/vscodium/issues/430)
 
-Additionally, auto-updates are disabled in your user `settings.json` as this patch would be overwritten when VSCodium updates itself; use `brew cask upgrade` instead of the built-in upgrade functionality.
+Additionally, auto-updates are disabled in your user `settings.json` as this patch would be overwritten when VSCodium updates itself; use `brew upgrade --cask` instead of the built-in upgrade functionality.
 
 
 ## Usage ##
 
-`brew cask install mplew-is/vscodium/vscodium`
+`brew cask install mplew-is/vscodium/vscodium-with-vscode-extensions`
 
 
 ## Updating and automation ##
 
-[A `Makefile`](./Makefile) is provided with an `update` target to check the upstream Cask repository for updates and pull in the changes via cherry-pick. The `homebrew-cask` submodule is used and updated during this process to track which commit was last checked during the update as a reference for the next run.
+[A `Makefile`](./Makefile) is provided with an `update` target to check the upstream Cask repository for updates and pull in the changes by applying [a pre-defined patch](./Casks/vscodium.rb.patch) to the upstream file. The `homebrew-cask` submodule is used and updated during this process to track which commit was last checked during the update as a reference for the next run.
 
 This repository also has [a GitHub Actions workflow](./.github/workflows/update.yaml) to automatically run the `make` receipe periodically and automatically publish the changes to this repository.
