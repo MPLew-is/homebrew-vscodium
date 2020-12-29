@@ -26,7 +26,7 @@ update:
 	@git remote add --fetch --track=master submodule "$$(git config --file=.gitmodules "submodule.${SUBMODULE_DIRECTORY}.url")"
 
     # Walk through each commit that touches the Cask file and bring in those changes by applying a pre-defined patch.
-	@git rev-list --reverse "@:./${SUBMODULE_DIRECTORY}..submodule/master" -- "${CASK_PATH}" | xargs -I {commit} -L 1 -- "${MAKE}" patch-commit SUBMODULE_COMMIT={commit}
+	@git rev-list --reverse "@:./${SUBMODULE_DIRECTORY}..submodule/master" -- "${CASK_PATH}" | xargs -L 1 -I{commit}  -- "${MAKE}" patch-commit SUBMODULE_COMMIT={commit}
 
 
 # If no specific commit provided via environment variable, just use the submodule's current `HEAD`.
