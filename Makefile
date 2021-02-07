@@ -23,7 +23,7 @@ update:
     # Only initialize and fetch the submodule, don't fully update it yet.
     # It will be walked through each applicable commit to allow the patch to be applied.
 	git submodule update --init --depth=1 -- "${SUBMODULE_DIRECTORY}"
-	git -C "${SUBMODULE_DIRECTORY}" fetch origin
+	git -C "${SUBMODULE_DIRECTORY}" fetch --shallow-since="$$(git -C "${SUBMODULE_DIRECTORY}" log -1 --pretty="format:%cI" HEAD)" origin
 
     # Ensure remote is removed prior to adding, to allow both local and Actions use.
 	! git remote show submodule 1>/dev/null 2>&1 || git remote remove submodule
