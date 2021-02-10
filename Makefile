@@ -19,9 +19,9 @@ PATCH_PATH          := Casks/vscodium.rb.patch
 # - `make` will not accept comments preceded by tabs (or, rather, will treat them as shell commands) but using spaces is fine, even if the formatting is a little weird.
 .PHONY: update
 update:
-	git submodule status -- "${SUBMODULE_DIRECTORY}"
-    # Only initialize and fetch the submodule, don't fully update it yet.
-    # It will be walked through each applicable commit to allow the patch to be applied.
+    # Only initialize and fetch the submodule, don't fully update it yet; it will be walked through each applicable commit to allow the patch to be applied.
+    # We only need the commits between the current submodule commit and the current tip of its origin, but `git submodule update` doesn't support all of the various shallow options that fetch does so just start with a single commit and then unshallow the fetch separately.
+    # The upstream has over 100,000 commits and likely has thousands of commits between `vscodium` updates, so we need to be extra judicious about what we fetch here.
 	git submodule update --init --depth=1 -- "${SUBMODULE_DIRECTORY}"
 	git -C "${SUBMODULE_DIRECTORY}" fetch --shallow-since="$$(git -C "${SUBMODULE_DIRECTORY}" log -1 --pretty="format:%cI" HEAD)" origin
 
@@ -42,7 +42,8 @@ patch-commit:
     # Re-build the patched formula from its sources (ignoring any timestamp comparisons, since this may be used to apply an older commit).
 	"${MAKE}" --always-make "${PATCHED_CASK_PATH}"
 
-    # Commit the new formula and the submodule using the submodule's commit (to emulate cherry-picking the submodule commit directly).
+    # Fetch just the submodule's `HEAD` and ommit the new formula (and the submodule update) using the submodule's commit message/author information.
+    # This emulates cherry-picking the submodule's commit directly (which was the original intent here) since we can't easily do that due to `patch`/`git apply` limitations with the scope of changes being made.
 	git fetch --depth=1 "./${SUBMODULE_DIRECTORY}" HEAD
 	git commit --reuse-message="${SUBMODULE_COMMIT}" --no-edit -- "${PATCHED_CASK_PATH}" "${SUBMODULE_DIRECTORY}"
 
