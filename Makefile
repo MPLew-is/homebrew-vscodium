@@ -35,7 +35,7 @@ SUBMODULE_COMMIT ?= $(shell git -C "${SUBMODULE_DIRECTORY}" rev-parse HEAD)
 # Create a commit that is the patched contents of the cask formula at the provided `${SUBMODULE_COMMIT}` and that reuses that commit's author information.
 # Essentially, we're trying to get as close to cherry-picking behavior as possible, but are forced to use a patch due to git not being smart enough to track the level of alteration being done to the formula file.
 .PHONY: patch-commit
-patch-commit: ${PATCHED_CASK_PATH}
+patch-commit:
     # Ensure that the version of the submodule that is committed is the one we want.
 	git -C "${SUBMODULE_DIRECTORY}" reset --hard "${SUBMODULE_COMMIT}"
 
