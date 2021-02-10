@@ -25,13 +25,8 @@ update:
 	git submodule update --init --depth=1 -- "${SUBMODULE_DIRECTORY}"
 	git -C "${SUBMODULE_DIRECTORY}" fetch --shallow-since="$$(git -C "${SUBMODULE_DIRECTORY}" log -1 --pretty="format:%cI" HEAD)" origin
 
-    # Ensure remote is removed prior to adding, to allow both local and Actions use.
-	! git remote show submodule 1>/dev/null 2>&1 || git remote remove submodule
-    # Add and fetch the submodule's origin as a remote for the superproject, since that seems to be the best way to get commit message reuse working.
-	git remote add --fetch --track=master submodule "$$(git config --file=.gitmodules "submodule.${SUBMODULE_DIRECTORY}.url")"
-
     # Walk through each commit that touches the Cask file and bring in those changes by applying a pre-defined patch.
-	git rev-list --reverse "@:./${SUBMODULE_DIRECTORY}..submodule/master" -- "${CASK_PATH}" | xargs -L 1 -I{commit}  -- "${MAKE}" patch-commit SUBMODULE_COMMIT={commit}
+	git -C "${SUBMODULE_DIRECTORY}" rev-list --reverse HEAD..origin/master -- "${CASK_PATH}" | xargs -L 1 -I{commit} -- "${MAKE}" patch-commit SUBMODULE_COMMIT={commit}
 
 
 # If no specific commit provided via environment variable, just use the submodule's current `HEAD`.
@@ -48,6 +43,7 @@ patch-commit: ${PATCHED_CASK_PATH}
 	"${MAKE}" --always-make "${PATCHED_CASK_PATH}"
 
     # Commit the new formula and the submodule using the submodule's commit (to emulate cherry-picking the submodule commit directly).
+	git fetch --depth=1 "./${SUBMODULE_DIRECTORY}" HEAD
 	git commit --reuse-message="${SUBMODULE_COMMIT}" --no-edit -- "${PATCHED_CASK_PATH}" "${SUBMODULE_DIRECTORY}"
 
 
