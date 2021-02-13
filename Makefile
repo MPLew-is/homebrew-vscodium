@@ -45,7 +45,7 @@ patch-commit:
     # Fetch just the submodule's `HEAD` and ommit the new formula (and the submodule update) using the submodule's commit message/author information.
     # This emulates cherry-picking the submodule's commit directly (which was the original intent here) since we can't easily do that due to `patch`/`git apply` limitations with the scope of changes being made.
 	git fetch --depth=1 "./${SUBMODULE_DIRECTORY}" HEAD
-	git commit --reuse-message="${SUBMODULE_COMMIT}" --no-edit -- "${PATCHED_CASK_PATH}" "${SUBMODULE_DIRECTORY}"
+	git commit --reuse-message="${SUBMODULE_COMMIT}" -- "${PATCHED_CASK_PATH}" "${SUBMODULE_DIRECTORY}"
     # Rewrite the issue link generally present in the commit summary to point back to the upstream `homebrew-cask` repository.
     # We can't edit the message in the above command reusing all the other commit information, so rather than trying to extract all that information, edit the message, and then commit it all together, just edit the new commit afterwards with the summary we want.
     # The intent is to rewrite, for instance `... (#1234)` to `... (Homebrew/homebrew-cask#1234)` while preserving all other parts of the commit (the body, author, timestamp, etc.).
