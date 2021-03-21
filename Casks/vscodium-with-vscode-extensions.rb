@@ -3,7 +3,6 @@ cask "vscodium-with-vscode-extensions" do
   sha256 "a927b3fea12cdfd0fdb02a2a3134d17f1ebf1b755f0f92762942d159fb83013d"
 
   url "https://github.com/VSCodium/vscodium/releases/download/#{version}/VSCodium.x64.#{version}.dmg"
-  appcast "https://github.com/VSCodium/vscodium/releases.atom"
   name "VSCodium (with original Visual Studio Code Extensions Gallery configuration)"
   desc "Binary releases of VS Code without MS branding/telemetry/licensing (and with original Visual Studio Code Extensions Gallery configuration)"
   homepage "https://github.com/VSCodium/vscodium"
