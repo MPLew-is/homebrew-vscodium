@@ -5,8 +5,9 @@ index e8759a82b2..574e0095e5 100644
 @@ -1,1 +1,1 @@
 -cask "vscodium" do
 +cask "vscodium-with-vscode-extensions" do
-@@ -6,10 +6,13 @@
-   appcast "https://github.com/VSCodium/vscodium/releases.atom"
+@@ -4,11 +4,14 @@
+ 
+   url "https://github.com/VSCodium/vscodium/releases/download/#{version}/VSCodium.x64.#{version}.dmg"
 -  name "VSCodium"
 -  desc "Binary releases of VS Code without MS branding/telemetry/licensing"
 +  name "VSCodium (with original Visual Studio Code Extensions Gallery configuration)"
