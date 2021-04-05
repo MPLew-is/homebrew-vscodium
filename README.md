@@ -12,7 +12,7 @@ Additionally, auto-updates are disabled in your user `settings.json` as this pat
 
 ## Usage ##
 
-`brew cask install mplew-is/vscodium/vscodium-with-vscode-extensions`
+`brew install mplew-is/vscodium/vscodium-with-vscode-extensions`
 
 
 ## Updating and automation ##
