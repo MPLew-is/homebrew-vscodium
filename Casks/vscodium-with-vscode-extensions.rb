@@ -7,7 +7,7 @@ cask "vscodium-with-vscode-extensions" do
   desc "Binary releases of VS Code without MS branding/telemetry/licensing (and with original Visual Studio Code Extensions Gallery configuration)"
   homepage "https://github.com/VSCodium/vscodium"
 
-  auto_updates false
+  auto_updates true
   conflicts_with cask: [
     "visual-studio-code",
     "vscodium",
@@ -28,35 +28,33 @@ cask "vscodium-with-vscode-extensions" do
 
   postflight do
     require 'json'
+    require 'fileutils'
 
-    # Reset extensions gallery to mainline Visual Studio Code one by overriding some settings in the app bundle.
-    product_file_path = "#{appdir}/VSCodium.app/Contents/Resources/app/product.json"
-    product = JSON.load(File.read(product_file_path))
-    product['extensionsGallery']['serviceUrl'] = 'https://marketplace.visualstudio.com/_apis/public/gallery'
-    product['extensionsGallery']['itemUrl'] = 'https://marketplace.visualstudio.com/items'
-    File.write(product_file_path, JSON.pretty_generate(product))
+    # Reset extensions gallery to mainline Visual Studio Code one by overriding some settings in an external `product.json`.
+    # Support for this was added in [a recent VSCodium change](https://github.com/VSCodium/vscodium/pull/674).
+    product_file_path = "#{Dir.home}/Library/Application Support/VSCodium/product.json"
 
-    # Disable auto-updating in user-level VSCodium settings, or the above extensions patch would be overwritten.
-    settings_file_path = "#{Dir.home}/Library/Application Support/VSCodium/User/settings.json"
-
-    # Read exisitng settings file if it exists.
+    # Read exisitng product file if it exists, to not clobber any other settings the user might have.
     begin
-      settings = JSON.load(File.read(settings_file_path))
+      product = JSON.load(File.read(product_file_path))
     # Just use an empty hash otherwise.
     rescue
-      settings = {}
+      product = {}
     end
 
-    settings['update.mode'] = 'none'
-    File.write(settings_file_path, JSON.pretty_generate(settings))
+    # Change needed settings and write back to external file.
+    # Make sure we don't clobber more settings here than necessary, in case there is something else set in the `extensionsGallery` dictionary.
+    extensionsGallerySettings = product['extensionsGallery'] || {}
+    extensionsGallerySettings['serviceUrl'] = 'https://marketplace.visualstudio.com/_apis/public/gallery'
+    extensionsGallerySettings['itemUrl']    = 'https://marketplace.visualstudio.com/items'
+    product['extensionsGallery'] = extensionsGallerySettings
 
-    # macOS quarantines apps when an internal file is modified; undo that to allow the app to open.
-    system_command 'xattr',
-                    args: [ '-r',
-                            '-d', 'com.apple.quarantine',
-                            "#{appdir}/VSCodium.app"
-                          ]
+    # Make sure VSCodium's Application Support directory is actually created before we try to write a file into it.
+    FileUtils.mkdir_p(File.dirname(product_file_path))
+    File.write(product_file_path, JSON.pretty_generate(product))
   end
 
-  caveats 'Do not use the built-in update functionality with this version of VSCodium or the extensions marketplace settings will be overwritten; use `brew upgrade --cask` instead.'
+  # Since we previously forced auto-updating off, we need to alert users about the new functionality.
+  # We don't want to blindly turn auto-updating back on in case the user doesn't want that for other reasons.
+  caveats 'With the latest versions of VSCodium, extensions gallery override settings and auto-updating can now coexist; if you want to turn auto-updating back on, remove the `update.mode` setting from your `settings.json` file.'
 end
