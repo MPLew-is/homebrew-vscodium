@@ -5,7 +5,7 @@ index e8759a82b2..574e0095e5 100644
 @@ -1,1 +1,1 @@
 -cask "vscodium" do
 +cask "vscodium-with-vscode-extensions" do
-@@ -4,11 +4,14 @@
+@@ -4,10 +4,14 @@
  
    url "https://github.com/VSCodium/vscodium/releases/download/#{version}/VSCodium.x64.#{version}.dmg"
 -  name "VSCodium"
@@ -15,7 +15,6 @@ index e8759a82b2..574e0095e5 100644
    homepage "https://github.com/VSCodium/vscodium"
 
    auto_updates true
--  conflicts_with cask: "visual-studio-code"
 +  conflicts_with cask: [
 +    "visual-studio-code",
 +    "vscodium",
