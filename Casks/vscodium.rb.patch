@@ -1,6 +1,6 @@
 diff --git a/homebrew-cask/Casks/vscodium.rb b/Casks/vscodium-with-vscode-extensions.rb
 index fe11b6463..6a3abdfe1 100644
---- a/homebrew-cask/Casks/vscodium.rb
+--- a/homebrew-cask/Casks/v/vscodium.rb
 +++ b/Casks/vscodium-with-vscode-extensions.rb
 @@ -1,1 +1,1 @@
 -cask "vscodium" do

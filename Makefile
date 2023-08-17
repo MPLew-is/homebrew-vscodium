@@ -10,7 +10,7 @@ endif
 
 # Set some "configuration" variables.
 SUBMODULE_DIRECTORY := homebrew-cask
-CASK_PATH           := Casks/vscodium.rb
+CASK_PATH           := Casks/v/vscodium.rb
 PATCHED_CASK_PATH   := Casks/vscodium-with-vscode-extensions.rb
 PATCH_PATH          := Casks/vscodium.rb.patch
 
