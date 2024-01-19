@@ -20,8 +20,6 @@ cask "vscodium-with-vscode-extensions" do
   app "VSCodium.app"
   binary "#{appdir}/VSCodium.app/Contents/Resources/app/bin/codium"
 
-  uninstall quit: "com.vscodium"
-
   zap trash: [
     "~/.vscode-oss",
     "~/Library/Application Support/VSCodium",
