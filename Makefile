@@ -50,9 +50,10 @@ patch-commit:
     # We can't edit the message in the above command reusing all the other commit information, so rather than trying to extract all that information, edit the message, and then commit it all together, just edit the new commit afterwards with the summary we want.
     # The intent is to rewrite the below patterns while preserving all other parts of the commit (the body, author, timestamp, etc.):
     # - `... (#1234)` to `... (Homebrew/homebrew-cask#1234)` (as part of the subject)
+    # - `Merge pull request #1234 from ...` (as part of the subject)
     # - `Closes #1234.` to `Closes Homebrew/homebrew-cask#1234).` (as a complete line)
     # - `Fixes #1234.` to `Fixes Homebrew/homebrew-cask#1234).` (as a complete line)
-	{ git log --format=%s --max-count=1 | sed -e 's:[(]\(#[0-9][0-9]*\)[)]$$:(Homebrew/homebrew-cask\1):'; git log --format=%b --max-count=1 | sed -e 's:^\([a-zA-Z][a-zA-Z]*\) \(#[0-9][0-9]*\)\.$$:\1 Homebrew/homebrew-cask\2.:'; } | git commit --amend --file=-
+	{ git log --format=%s --max-count=1 | sed -e 's:\(#[0-9][0-9]*\):Homebrew/homebrew-cask\1:'; git log --format=%b --max-count=1 | sed -e 's:^\([a-zA-Z][a-zA-Z]*\) \(#[0-9][0-9]*\)\.$$:\1 Homebrew/homebrew-cask\2.:'; } | git commit --amend --file=-
 
 
 # Build the patched cask formula from the cask file and the pre-defined patch.
