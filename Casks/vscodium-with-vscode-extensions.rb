@@ -11,6 +11,7 @@ cask "vscodium-with-vscode-extensions" do
   homepage "https://github.com/VSCodium/vscodium"
 
   auto_updates true
+  depends_on macos: ">= :high_sierra"
   conflicts_with cask: [
     "visual-studio-code",
     "vscodium",
@@ -19,14 +20,17 @@ cask "vscodium-with-vscode-extensions" do
   app "VSCodium.app"
   binary "#{appdir}/VSCodium.app/Contents/Resources/app/bin/codium"
 
+  uninstall quit: "com.vscodium"
+
   zap trash: [
     "~/.vscode-oss",
-    "~/Library/Application Support/com.apple.sharedfilelist/com.apple.LSSharedFileList.ApplicationRecentDocuments/com.visualstudio.code.oss.sfl*",
     "~/Library/Application Support/VSCodium",
-    "~/Library/Logs/VSCodium",
-    "~/Library/Preferences/com.visualstudio.code.oss.helper.plist",
-    "~/Library/Preferences/com.visualstudio.code.oss.plist",
-    "~/Library/Saved Application State/com.visualstudio.code.oss.savedState",
+    "~/Library/Application Support/com.apple.sharedfilelist/com.apple.LSSharedFileList.ApplicationRecentDocuments/com.vscodium.sfl*",
+    "~/Library/Caches/com.vscodium",
+    "~/Library/Caches/com.vscodium.ShipIt",
+    "~/Library/HTTPStorages/com.vscodium",
+    "~/Library/Preferences/com.vscodium*.plist",
+    "~/Library/Saved Application State/com.vscodium.savedState",
   ]
 
   postflight do
