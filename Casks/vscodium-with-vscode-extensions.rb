@@ -22,8 +22,8 @@ cask "vscodium-with-vscode-extensions" do
 
   zap trash: [
     "~/.vscode-oss",
-    "~/Library/Application Support/VSCodium",
     "~/Library/Application Support/com.apple.sharedfilelist/com.apple.LSSharedFileList.ApplicationRecentDocuments/com.vscodium.sfl*",
+    "~/Library/Application Support/VSCodium",
     "~/Library/Caches/com.vscodium",
     "~/Library/Caches/com.vscodium.ShipIt",
     "~/Library/HTTPStorages/com.vscodium",
