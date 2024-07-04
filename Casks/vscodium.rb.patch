@@ -5,13 +5,15 @@ index fe11b6463..6a3abdfe1 100644
 @@ -1,1 +1,1 @@
 -cask "vscodium" do
 +cask "vscodium-with-vscode-extensions" do
-@@ -7,11 +7,15 @@ cask "vscodium" do
+@@ -7,6 +7,6 @@
  
    url "https://github.com/VSCodium/vscodium/releases/download/#{version}/VSCodium.#{arch}.#{version}.dmg"
 -  name "VSCodium"
 +  name "VSCodium (with original Visual Studio Code Extensions Gallery configuration)"
    desc "Binary releases of VS Code without MS branding/telemetry/licensing"
    homepage "https://github.com/VSCodium/vscodium"
+ 
+@@ -33,7 +33,11 @@
  
    auto_updates true
    depends_on macos: ">= :high_sierra"
@@ -22,7 +24,8 @@ index fe11b6463..6a3abdfe1 100644
  
    app "VSCodium.app"
    binary "#{appdir}/VSCodium.app/Contents/Resources/app/bin/codium"
-@@ -28,4 +32,36 @@ cask "vscodium" do
+ 
+@@ -47,4 +51,36 @@
      "~/Library/Preferences/com.vscodium*.plist",
      "~/Library/Saved Application State/com.vscodium.savedState",
    ]
